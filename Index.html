@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CancerToken ($CNCR) — TERMINAL PROTOCOL (HYPER)</title>
+<meta name="robots" content="noindex,nofollow" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#020104;
+    --panel:#071014;
+    --neon:#ff1622;
+    --neon2:#ff6b6b;
+    --muted:#93a0a8;
+    --danger:#ffcc00;
+    --glass: rgba(255,255,255,0.02);
+    --trust:#081018;
+  }
+  *{box-sizing:border-box;font-family:Inter, system-ui, -apple-system,"Segoe UI",Roboto,Arial;}
+  html,body{height:100%;margin:0;background:radial-gradient(ellipse at 10% 10%, rgba(255,22,22,0.02) 0%, transparent 20%), linear-gradient(180deg,#000204 0%, #030308 70%);color:#eaeaea;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+
+  /* Global wrapper */
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px;position:relative}
+
+  /* Animated background fog & particles (visual only) */
+  .bg-fog{
+    position:fixed;inset:0;z-index:-4;pointer-events:none;
+    background:
+      radial-gradient(circle at 60% 20%, rgba(255,20,20,0.06), transparent 10%),
+      radial-gradient(circle at 10% 80%, rgba(255,80,80,0.02), transparent 12%);
+    mix-blend-mode:screen;opacity:0.9;filter:blur(20px);
+    animation:fogShift 18s linear infinite;
+  }
+  @keyframes fogShift{0%{transform:translateY(0)}50%{transform:translateY(-18px)}100%{transform:translateY(0)}}
+
+  .particles{position:fixed;inset:0;z-index:-3;pointer-events:none}
+  .particle{position:absolute;width:6px;height:6px;border-radius:50%;background:rgba(255,60,60,0.9);filter:blur(1px);opacity:0.12;animation:particleFloat 12s linear infinite}
+  @keyframes particleFloat{0%{transform:translateY(0) translateX(0) scale(1);opacity:.08}50%{transform:translateY(-120px) translateX(12px) scale(.8);opacity:.18}100%{transform:translateY(0) translateX(-8px) scale(1);opacity:.06}}
+
+  /* Siren bar (top) */
+  .siren{position:fixed;left:0;right:0;top:0;height:6px;background:linear-gradient(90deg,#ff3b3b,#ff8b8b);box-shadow:0 6px 40px rgba(255,20,20,0.18);opacity:0;pointer-events:none;z-index:9999;transition:opacity .15s linear}
+  .siren.on{opacity:1}
+
+  /* header */
+  header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .logo-box{width:120px;height:120px;border-radius:14px;padding:8px;background:linear-gradient(180deg,#070606,#0c0a0a);border:1px solid rgba(255,20,20,0.08);box-shadow:0 18px 110px rgba(255,20,20,0.08);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .title h1{margin:0;font-size:22px;letter-spacing:1px}
+  .title p{margin:8px 0 0;color:var(--muted);font-size:13px}
+
+  /* hero split */
+  .hero{display:grid;grid-template-columns:520px 1fr;gap:22px;align-items:start}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 18px 80px rgba(0,0,0,0.6)}
+
+  /* left hero (logo area) */
+  .left{position:relative;padding:14px;border-radius:12px;overflow:visible}
+  .left .ribbon{position:absolute;left:12px;top:12px;background:rgba(255,30,30,0.06);color:var(--neon);padding:6px 10px;border-radius:6px;border:1px solid rgba(255,30,30,0.06);font-weight:800}
+  .skull-hero{display:flex;align-items:center;justify-content:center;padding:18px;background:radial-gradient(circle at 50% 28%, rgba(255,40,40,0.03), transparent 28%);border-radius:12px;border:1px solid rgba(255,40,40,0.03);position:relative;overflow:visible}
+  .skull-hero img{width:340px;height:auto;display:block;filter:drop-shadow(0 26px 60px rgba(255,20,20,0.14));transition:transform .4s cubic-bezier(.2,.9,.2,1),filter .3s}
+
+  /* neon outline around logo */
+  .logo-outline{position:absolute;inset:auto auto 18px auto;width:360px;height:360px;border-radius:8px;mix-blend-mode:screen;pointer-events:none;filter:blur(28px);opacity:0.45;transition:opacity .3s}
+
+  /* right panel */
+  .right{padding:18px;border-radius:12px;background:linear-gradient(180deg,#021217,#03161b);border:1px solid rgba(255,255,255,0.02);box-shadow:0 18px 70px rgba(0,0,0,0.65)}
+
+  .lead{color:#d7d7d7;margin-top:12px;line-height:1.45;font-size:15px}
+  .badges{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .badge{background:rgba(255,30,30,0.06);padding:8px 12px;border-radius:12px;color:var(--neon);font-weight:800;font-size:13px;border:1px solid rgba(255,30,30,0.05)}
+
+  /* glitch heading */
+  .glitch{position:relative;display:inline-block;font-weight:900;font-size:26px}
+  .glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0}
+  .glitch::before{left:2px;color:#ffbdbd;mix-blend-mode:screen;opacity:0.76;transform:translateX(2px)}
+  .glitch::after{left:-2px;color:#ff7b7b;mix-blend-mode:screen;opacity:0.6;transform:translateX(-2px)}
+  .glitch.anim{-webkit-animation:glitchShift 2.4s infinite linear;animation:glitchShift 2.4s infinite linear}
+  @keyframes glitchShift{
+    0%{transform:translateY(0)}
+    20%{transform:translateY(-2px) skewX(-1deg)}
+    40%{transform:translateY(0)}
+    60%{transform:translateY(1px) skewX(1deg)}
+    80%{transform:translateY(0)}
+    100%{transform:translateY(0)}
+  }
+
+  /* CTA styles */
+  .cta{display:flex;gap:12px;margin-top:14px;align-items:center}
+  .btn{padding:12px 16px;border-radius:12px;font-weight:900;border:0;cursor:pointer}
+  .buy{background:linear-gradient(90deg,var(--neon),var(--neon2));color:#fff;box-shadow:0 18px 70px rgba(255,20,20,0.18);transition:transform .12s ease,box-shadow .12s ease}
+  .buy:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 28px 120px rgba(255,20,20,0.24)}
+  .twitter{background:#0b0b0b;color:var(--neon);border:1px solid rgba(255,20,20,0.06);padding:12px;border-radius:12px;font-weight:800}
+
+  /* grid cards */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+  .card.hollow{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));border:1px solid rgba(255,255,255,0.02);padding:14px;border-radius:10px}
+
+  /* breach logs */
+  .logs{background:#050607;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);font-family:monospace;color:#bcd7db;font-size:13px;height:180px;overflow:auto}
+
+  /* pulse border effect */
+  .pulse-border{transition:box-shadow .28s ease-in-out}
+  .pulse-border.pulse{box-shadow:0 0 120px rgba(255,30,30,0.18) inset, 0 32px 120px rgba(255,10,10,0.06)}
+
+  /* scanlines CRT */
+  .scanlines{position:fixed;inset:0;z-index:-2;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.006) 1px, transparent 1px);background-size:100% 4px;opacity:0.06;mix-blend-mode:overlay}
+
+  /* small siren icon (top-right) */
+  .siren-icon{position:absolute;right:18px;top:18px;background:rgba(255,20,20,0.06);padding:8px;border-radius:8px;border:1px solid rgba(255,20,20,0.04);color:var(--neon);font-weight:800}
+
+  /* responsive */
+  @media(max-width:1100px){.hero{grid-template-columns:1fr}.skull-hero img{width:300px}}
+  @media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- animated background -->
+<div class="bg-fog" aria-hidden></div>
+<div class="particles" aria-hidden>
+  <!-- a few particle dots placed in JS too; static fallback for no-JS users -->
+  <div class="particle" style="left:5%;top:65%;animation-duration:14s"></div>
+  <div class="particle" style="left:22%;top:72%;animation-duration:12s"></div>
+  <div class="particle" style="left:66%;top:55%;animation-duration:10s"></div>
+  <div class="particle" style="left:78%;top:24%;animation-duration:16s"></div>
+</div>
+
+<!-- subtle scanlines for CRT vibe -->
+<div class="scanlines" aria-hidden></div>
+
+<!-- siren bar -->
+<div class="siren" id="sirenBar"></div>
+
+<div class="wrap">
+  <header>
+    <div class="logo-box" id="logoBox">
+      <img src="logo.png" alt="CancerToken logo" style="width:100%;height:100%;object-fit:contain;transition:transform .35s ease" id="headerLogo">
+      <!-- neon halo (visual) -->
+      <div class="logo-outline" style="background:radial-gradient(circle at 50% 30%, rgba(255,30,30,0.18), transparent 40%);"></div>
+    </div>
+    <div class="title">
+      <h1 style="margin:0;font-weight:900">CANCER<span style="color:var(--neon)">TOKEN</span> <small style="opacity:.6">($CNCR)</small></h1>
+      <p style="margin-top:8px;color:var(--muted)">Terminal Protocol — High-danger memecoin • Pump.fun launch</p>
+    </div>
+  </header>
+
+  <main class="hero">
+    <section class="card left pulse-border" id="leftPanel">
+      <div class="ribbon">CONTAINMENT MODE</div>
+
+      <div class="skull-hero" id="skullWrap" title="CNCR">
+        <img id="heroLogo" src="logo.png" alt="CNCR" />
+        <!-- animated neon ring (SVG) -->
+        <svg width="360" height="360" viewBox="0 0 360 360" style="position:absolute;left:50%;top:26px;transform:translateX(-50%);pointer-events:none;mix-blend-mode:screen;filter:blur(26px);opacity:.55" aria-hidden>
+          <defs>
+            <radialGradient id="rg" cx="50%" cy="40%"><stop offset="0%" stop-color="#ff8a8a"/><stop offset="50%" stop-color="#ff2a2a"/><stop offset="100%" stop-color="#2b0000"/></radialGradient>
+          </defs>
+          <circle cx="180" cy="180" r="140" fill="none" stroke="url(#rg)" stroke-width="18" stroke-linecap="round" />
+        </svg>
+      </div>
+
+      <div class="lead"><strong>$CNCR</strong> — a memetic experiment engineered for late-night degens. This version turns up the containment-breach drama while keeping a clean, credible structure for real buyers.</div>
+
+      <div class="badges">
+        <div class="badge">Total Supply: 1,420,000</div>
+        <div class="badge">Tax: 0%</div>
+        <div class="badge">Dev Bag: 1,420,000</div>
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+        <div class="card hollow" style="flex:1">
+          <strong style="color:var(--neon)">Threat</strong>
+          <div style="color:var(--muted);margin-top:6px">LEVEL 5 — RED • Expect extreme volatility</div>
+        </div>
+        <div class="card hollow" style="width:160px">
+          <strong style="color:var(--neon)">Launch</strong>
+          <div style="color:var(--muted);margin-top:6px">Pump.fun → Raydium</div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="right card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2 class="glitch anim" data-text="TERMINAL: CONTAINMENT">TERMINAL: CONTAINMENT</h2>
+        <div class="siren-icon">ALERT</div>
+      </div>
+
+      <div style="color:var(--muted);margin-top:8px">Hacker-terminal aesthetics meet biohazard branding. Clean UX, credible CTAs — but the site looks like something you shouldn’t touch (and that’s the intention).</div>
+
+      <div class="logs console" style="margin-top:12px">
+        <div style="color:#93f2ff">[system]</div>
+        <div style="margin-top:6px">> scanning pump.fun new list...</div>
+        <div>> awaiting first host (buyer)</div>
+        <div style="margin-top:6px;color:var(--muted)">Tip: Pump.fun watchers + late-night degens drive initial buys.</div>
+      </div>
+
+      <div class="cta" style="margin-top:14px">
+        <button id="buyBtn" class="btn buy" onclick="window.open('https://pump.fun','_blank')">BUY $CNCR</button>
+        <a class="twitter" href="https://x.com/CancerTokenSol?t=5WCHg-_vht5vO_7LwOe-YQ&s=09" target="_blank">TWITTER</a>
+      </div>
+
+      <div class="grid" style="margin-top:16px">
+        <div class="card hollow"><h3 style="color:var(--neon);margin:0 0 8px">Containment</h3><div style="color:var(--muted)">Mint revoked post-creation. LP created at migration. No presale.</div></div>
+        <div class="card hollow"><h3 style="color:var(--neon);margin:0 0 8px">Behavior</h3><div style="color:var(--muted)">Memetic amplification, fast spikes, quick collapses — trade responsibly.</div></div>
+        <div class="card hollow"><h3 style="color:var(--neon);margin:0 0 8px">Survival</h3><div style="color:var(--muted)">Buy only via pump.fun link. Hold sell thresholds and plan exits.</div></div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3 style="color:var(--neon);margin:0 0 8px">Breach Logs</h3>
+        <div class="logs" id="logs">
+          <div>[00:00:02] queued marketing threads</div>
+          <div>[00:00:18] meme seeding active</div>
+          <div>[00:00:48] awaiting first buys</div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <section style="margin-top:18px">
+    <div class="grid">
+      <div class="card"><h3 style="color:var(--neon);margin:0 0 8px">Roadmap</h3><div style="color:var(--muted)">Q1 — Diagnosis (launch). Q2 — Infection (social seeding). Q3 — Mutation (pull small extraction). Q4 — Terminal (reinvest / iterate).</div></div>
+      <div class="card"><h3 style="color:var(--neon);margin:0 0 8px">Lore</h3><div style="color:var(--muted)"><strong>1 — You Buy:</strong> The early cult forms. <br><strong>2 — You Meme:</strong> Spread. <br><strong>3 — You Exit:</strong> The ritual ends.</div></div>
+      <div class="card"><h3 style="color:var(--neon);margin:0 0 8px">Disclaimer</h3><div style="color:var(--muted)">Satire / art project. Not financial advice. Risk-only capital you can afford to lose.</div></div>
+    </div>
+  </section>
+
+  <footer style="margin-top:22px;text-align:center;color:var(--muted);font-size:13px">
+    © 2025 CancerToken • $CNCR — Terminal Protocol • Do not trust DMs • Use only pump.fun link
+  </footer>
+</div>
+
+<!-- JS: heavy effects, breach loop, particles, and helpers -->
+<script>
+/* Helper: set buy link quickly at launch */
+function setBuyLink(url){
+  const b = document.getElementById('buyBtn');
+  if(!b) return console.warn('buyBtn not found');
+  b.onclick = ()=>window.open(url,'_blank');
+  b.textContent = 'BUY $CNCR';
+  b.style.boxShadow = '0 28px 140px rgba(255,20,20,0.28)';
+  const logs = document.getElementById('logs');
+  if(logs){
+    const d = new Date();
+    const entry = document.createElement('div');
+    entry.textContent = `[${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}] buy link activated`;
+    logs.insertBefore(entry, logs.firstChild);
+  }
+  console.log('Buy link set to', url);
+}
+window.setBuyLink = setBuyLink;
+
+/* Small particle generator (injects many particles for 10x effect) */
+(function createParticles(){
+  try{
+    const container = document.querySelector('.particles');
+    if(!container) return;
+    const n = 22;
+    for(let i=0;i<n;i++){
+      const d = document.createElement('div');
+      d.className = 'particle';
+      const left = Math.random()*98;
+      const top = Math.random()*98;
+      const dur = 8 + Math.random()*12;
+      const size = 2 + Math.random()*8;
+      d.style.left = left + '%';
+      d.style.top = top + '%';
+      d.style.width = size+'px';
+      d.style.height = size+'px';
+      d.style.opacity = (0.04 + Math.random()*0.18);
+      d.style.background = `rgba(255,${40+Math.floor(Math.random()*60)},${40+Math.floor(Math.random()*60)},0.95)`;
+      d.style.animationDuration = dur+'s';
+      container.appendChild(d);
+    }
+  }catch(e){console.warn(e)}
+})();
+
+/* Breach effect: strong siren + panel pulse + logo wobble + small screen shake */
+const siren = document.getElementById('sirenBar');
+const leftPanel = document.getElementById('leftPanel');
+const heroLogo = document.getElementById('heroLogo');
+const headerLogo = document.getElementById('headerLogo');
+
+function breachBurst(){
+  // siren on
+  siren.classList.add('on');
+  setTimeout(()=>siren.classList.remove('on'), 520);
+
+  // left panel pulse border
+  leftPanel.classList.add('pulse');
+  setTimeout(()=>leftPanel.classList.remove('pulse'), 1100);
+
+  // logo big flash + tilt
+  heroLogo.style.transform = 'scale(1.08) rotate(-1.1deg)';
+  headerLogo.style.transform = 'scale(1.04) rotate(-0.6deg)';
+  heroLogo.style.filter = 'drop-shadow(0 32px 80px rgba(255,40,40,0.22))';
+  setTimeout(()=>{ heroLogo.style.transform = ''; headerLogo.style.transform=''; heroLogo.style.filter='drop-shadow(0 18px 40px rgba(255,20,20,0.14))'; }, 1100);
+
+  // quick document body nudge (very subtle)
+  document.body.style.transform = 'translateY(-3px)';
+  setTimeout(()=>document.body.style.transform = '', 180);
+}
+
+/* initial trigger then loop with 12-15s interval (randomized) */
+setTimeout(breachBurst, 900);
+(function loopBreach(){
+  const t = 11500 + Math.floor(Math.random()*6000); // 11.5s - 17.5s
+  setInterval(breachBurst, t);
+})();
+
+/* heading glitch subtle pulse (random) */
+(function headingPulse(){
+  const els = document.querySelectorAll('.glitch.anim');
+  setInterval(()=>{
+    els.forEach(el=>{ el.style.opacity = 0.9 + Math.random()*0.12; el.style.transform = `translateX(${(Math.random()*2-1)}px) skewX(${(Math.random()*2-1)}deg)` });
+    setTimeout(()=>els.forEach(el=>{ el.style.opacity=''; el.style.transform=''; }), 240);
+  }, 3000 + Math.random()*4000);
+})();
+
+/* logs generator to simulate activity */
+(function logGenerator(){
+  const logs = document.getElementById('logs');
+  if(!logs) return;
+  let i=0;
+  const msgs = ['monitor: pump.fun feed scanning','monitor: social reach check','monitor: liquidity estimation','monitor: meme seeding active','monitor: watchers online'];
+  setInterval(()=>{
+    const d = new Date();
+    const ts = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+    const el = document.createElement('div');
+    el.textContent = `[${ts}] ${msgs[i % msgs.length]}`;
+    logs.insertBefore(el, logs.firstChild);
+    if(logs.children.length > 22) logs.removeChild(logs.lastChild);
+    i++;
+  }, 5200);
+})();
+
+/* small accessibility: reduce effects if user prefers reduced motion */
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(prefersReduced){
+  document.querySelectorAll('.particle').forEach(p=>p.style.display='none');
+  document.querySelectorAll('.glitch').forEach(g=>g.classList.remove('anim'));
+  clearInterval(); // best-effort, not necessary
+}
+</script>
+</body>
+</html>
